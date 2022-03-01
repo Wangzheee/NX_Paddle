@@ -149,8 +149,6 @@ void TensorRtSubgraphPass::CreateTensorRTOp(
     input_names_with_id.insert(x->Name() + std::to_string(x->id()));
     if (std::count(graph_params.begin(), graph_params.end(), x->Name()) > 0) {
       params.push_back(x->Name());
-    } else {
-      LOG(INFO) << "---->input name: " << x->Name();
     }
     if (std::count(graph_params.begin(), graph_params.end(), x->Name()) > 0 &&
         x->outputs.size() <= 1) {

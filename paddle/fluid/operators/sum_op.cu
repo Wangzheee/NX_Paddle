@@ -254,7 +254,7 @@ class SumKernel<platform::CUDADeviceContext, T>
 
 namespace ops = paddle::operators;
 namespace plat = paddle::platform;
-REGISTER_OP_CUDA_KERNEL__(
+REGISTER_OP_CUDA_KERNEL(
     sum, ops::SumKernel<paddle::platform::CUDADeviceContext, float>,
     ops::SumKernel<paddle::platform::CUDADeviceContext, double>,
     ops::SumKernel<paddle::platform::CUDADeviceContext, int>,

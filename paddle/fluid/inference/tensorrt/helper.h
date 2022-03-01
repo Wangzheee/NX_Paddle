@@ -31,19 +31,9 @@ namespace tensorrt {
   ((NV_TENSORRT_MAJOR * 1000 + NV_TENSORRT_MINOR * 100 + \
     NV_TENSORRT_PATCH * 10 + NV_TENSORRT_BUILD) >= version)
 
-#define IS_TRT_VERSION_LT(version)                       \
-  ((NV_TENSORRT_MAJOR * 1000 + NV_TENSORRT_MINOR * 100 + \
-    NV_TENSORRT_PATCH * 10 + NV_TENSORRT_BUILD) < version)
-
 #define TRT_VERSION                                    \
   NV_TENSORRT_MAJOR * 1000 + NV_TENSORRT_MINOR * 100 + \
       NV_TENSORRT_PATCH * 10 + NV_TENSORRT_BUILD
-
-#if IS_TRT_VERSION_GE(8000)
-#define TRT_NOEXCEPT noexcept
-#else
-#define TRT_NOEXCEPT
-#endif
 
 namespace dy = paddle::platform::dynload;
 

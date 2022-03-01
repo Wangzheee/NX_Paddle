@@ -119,8 +119,6 @@ class MulOp : public framework::OperatorWithKernel {
 
     return framework::OpKernelType(input_data_type, ctx.GetPlace(), layout,
                                    library, customized_type_value);
-//    return framework::OpKernelType(input_data_type, platform::CPUPlace(), layout,
-//                                   library, customized_type_value);
   }
 };
 
@@ -306,7 +304,7 @@ class MulDoubleGradMaker : public framework::SingleGradOpMaker<T> {
 }  // namespace paddle
 
 namespace ops = paddle::operators;
-REGISTER_OPERATOR__(mul, ops::MulOp, ops::MulOpMaker, ops::MulOpInferVarType,
+REGISTER_OPERATOR(mul, ops::MulOp, ops::MulOpMaker, ops::MulOpInferVarType,
                   ops::MulOpGradMaker<paddle::framework::OpDesc>,
                   ops::MulOpGradMaker<paddle::imperative::OpBase>);
 
@@ -316,7 +314,7 @@ REGISTER_OPERATOR(mul_grad, ops::MulGradOp,
 
 REGISTER_OPERATOR(mul_grad_grad, ops::MulDoubleGradOp);
 
-REGISTER_OP_CPU_KERNEL__(
+REGISTER_OP_CPU_KERNEL(
     mul, ops::MulKernel<paddle::platform::CPUDeviceContext, float>,
     ops::MulKernel<paddle::platform::CPUDeviceContext, double>);
 

@@ -15,7 +15,7 @@
 
 namespace ops = paddle::operators;
 
-REGISTER_OP_CUDA_KERNEL__(
+REGISTER_OP_CUDA_KERNEL(
     im2sequence,
     ops::Im2SequenceKernel<paddle::platform::CUDADeviceContext, float>);
 REGISTER_OP_CUDA_KERNEL(

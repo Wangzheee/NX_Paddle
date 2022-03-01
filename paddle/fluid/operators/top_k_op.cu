@@ -142,7 +142,7 @@ class TopkOpGradCUDAKernel : public framework::OpKernel<T> {
 
 }  // namespace operators
 }  // namespace paddle
-REGISTER_OP_CUDA_KERNEL__(
+REGISTER_OP_CUDA_KERNEL(
     top_k,
     paddle::operators::TopkOpCUDAKernel<paddle::platform::CUDADeviceContext,
                                         float>,

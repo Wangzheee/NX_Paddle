@@ -182,7 +182,7 @@ class Im2SequenceGradMaker : public framework::SingleGradOpMaker<T> {
 }  // namespace paddle
 
 namespace ops = paddle::operators;
-REGISTER_OPERATOR__(im2sequence, ops::Im2SequenceOp, ops::Im2SequenceOpMaker,
+REGISTER_OPERATOR(im2sequence, ops::Im2SequenceOp, ops::Im2SequenceOpMaker,
                   ops::Im2SequenceGradMaker<paddle::framework::OpDesc>,
                   ops::Im2SequenceGradMaker<paddle::imperative::OpBase>);
 REGISTER_OPERATOR(im2sequence_grad, ops::Im2SequenceGradOp);

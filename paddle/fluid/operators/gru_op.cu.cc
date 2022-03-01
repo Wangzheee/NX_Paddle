@@ -113,7 +113,7 @@ class GRUKernel : public framework::OpKernel<T> {
 }  // namespace paddle
 
 namespace ops = paddle::operators;
-REGISTER_OP_CUDA_KERNEL__(
+REGISTER_OP_CUDA_KERNEL(
     gru, ops::GRUKernel<paddle::platform::CUDADeviceContext, float>,
     ops::GRUKernel<paddle::platform::CUDADeviceContext, double>);
 REGISTER_OP_CUDA_KERNEL(

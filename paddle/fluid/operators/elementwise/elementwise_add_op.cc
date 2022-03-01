@@ -110,7 +110,7 @@ class ElementwiseAddDoubleGradMaker : public framework::SingleGradOpMaker<T> {
 }  // namespace paddle
 
 REGISTER_ELEMWISE_GRAD_MAKER(elementwise_add, Add);
-REGISTER_ELEMWISE_EXPLICIT_OP_WITHOUT_GRAD__(elementwise_add, Add);
+REGISTER_ELEMWISE_EXPLICIT_OP_WITHOUT_GRAD(elementwise_add, Add);
 
 namespace ops = paddle::operators;
 REGISTER_OPERATOR(
@@ -124,7 +124,7 @@ REGISTER_OPERATOR(elementwise_add_grad_grad,
                   ops::ElementwiseDoubleGradOpInplaceInferer,
                   ops::ElementwiseDoubleGradNoBufVarsInferer);
 
-REGISTER_OP_CPU_KERNEL__(
+REGISTER_OP_CPU_KERNEL(
     elementwise_add,
     ops::ElementwiseAddKernel<paddle::platform::CPUDeviceContext, float>,
     ops::ElementwiseAddKernel<paddle::platform::CPUDeviceContext, double>,
