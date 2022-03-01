@@ -1213,6 +1213,9 @@ void OperatorWithKernel::ChooseKernel(const RuntimeContext& ctx,
       }
     }
   }
+  /*if(type_=="top_k"||type_=="cast"){
+    expected_kernel_key.place_ = platform::CPUPlace();
+  }*/
   VLOG(3) << "expected_kernel_key:" << expected_kernel_key;
 
   auto kernel_iter = kernels.find(expected_kernel_key);

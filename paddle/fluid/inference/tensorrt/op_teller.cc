@@ -110,9 +110,9 @@ struct SimpleOpTypeSetTeller : public Teller {
       "flatten",
       "nearest_interp",
       "yolo_box",
+      "sum",
   };
 };
-
 bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
                     bool use_no_calib_int8) {
   // do not support the op which is labeled the `skip_quant`
@@ -162,6 +162,7 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
         }
       }
     }
+/*
     if (op_type == "reshape2") {
       if (!desc.HasAttr("shape")) return false;
       std::vector<int> shape =
@@ -184,7 +185,7 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
 	return false;
       }
 
-/*      std::cout << "input shape: ";
+     std::cout << "input shape: ";
         std::cout << "[";
         for (size_t i=0; i<input_shape.size(); i++) {
           std::cout << input_shape[i] << ", ";
@@ -196,7 +197,8 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
           std::cout << shape[i] << ", ";
         }
         std::cout << "]\n";
-*/    }
+  
+      	}*/
     if (op_type == "nearest_interp") {
       return false;
     }

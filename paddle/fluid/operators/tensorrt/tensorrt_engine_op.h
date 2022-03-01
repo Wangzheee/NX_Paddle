@@ -401,7 +401,13 @@ class TensorRTEngineOp : public framework::OperatorBase {
 
       output_index += 1;
     }
-
+    if(scope.FindVar("fc_0.tmp_1")&&scope.FindVar("fc_1.tmp_1")&&scope.FindVar("im2sequence_0.tmp_0")){
+      inference::analysis::GetFromScope<framework::LoDTensor>(scope, "fc_0.tmp_1").set_lod(inference::analysis::GetFromScope<framework::LoDTensor>(scope, "im2sequence_0.tmp_0").lod());
+      inference::analysis::GetFromScope<framework::LoDTensor>(scope, "fc_1.tmp_1").set_lod(inference::analysis::GetFromScope<framework::LoDTensor>(scope, "im2sequence_0.tmp_0").lod());
+    }
+    if(scope.FindVar("fc_2.tmp_3")&&scope.FindVar("gru_0.tmp_0")){
+      inference::analysis::GetFromScope<framework::LoDTensor>(scope, "fc_2.tmp_3").set_lod(inference::analysis::GetFromScope<framework::LoDTensor>(scope, "gru_0.tmp_0").lod());
+    }
     if (!engine->with_dynamic_shape()) {
       PADDLE_ENFORCE_LE(
           runtime_batch, max_batch_size_,
