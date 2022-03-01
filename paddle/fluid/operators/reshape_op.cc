@@ -610,7 +610,7 @@ REGISTER_OP_CPU_KERNEL_FUNCTOR(reshape_grad, float, ops::ReshapeGradKernel,
                                double, ops::ReshapeGradKernel, int,
                                ops::ReshapeGradKernel, int64_t,
                                ops::ReshapeGradKernel);
-REGISTER_OPERATOR(reshape2, ops::Reshape2Op, ops::Reshape2OpMaker,
+REGISTER_OPERATOR__(reshape2, ops::Reshape2Op, ops::Reshape2OpMaker,
                   ops::Reshape2GradMaker<paddle::framework::OpDesc>,
                   ops::Reshape2GradMaker<paddle::imperative::OpBase>,
                   ops::ReshapeOpInplaceInferer);
@@ -656,7 +656,7 @@ REGISTER_OP_CUDA_KERNEL_FUNCTOR(reshape_grad, float, ops::ReshapeGradKernel,
                                 ops::ReshapeGradKernel, plat::float16,
 
                                 ops::ReshapeGradKernel);
-REGISTER_OP_CUDA_KERNEL_FUNCTOR(reshape2, float, ops::ReshapeKernel, double,
+REGISTER_OP_CUDA_KERNEL_FUNCTOR__(reshape2, float, ops::ReshapeKernel, double,
                                 ops::ReshapeKernel, int, ops::ReshapeKernel,
                                 uint8_t, ops::ReshapeKernel, int64_t,
                                 ops::ReshapeKernel, plat::float16,

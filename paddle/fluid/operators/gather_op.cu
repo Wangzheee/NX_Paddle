@@ -153,7 +153,7 @@ class GatherGradOpCUDAKernel : public framework::OpKernel<T> {
 
 namespace ops = paddle::operators;
 namespace plat = paddle::platform;
-REGISTER_OP_CUDA_KERNEL(gather, ops::GatherOpCUDAKernel<float>,
+REGISTER_OP_CUDA_KERNEL__(gather, ops::GatherOpCUDAKernel<float>,
                         ops::GatherOpCUDAKernel<double>,
                         ops::GatherOpCUDAKernel<int64_t>,
                         ops::GatherOpCUDAKernel<int>,

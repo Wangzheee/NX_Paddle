@@ -92,7 +92,7 @@ elementwise_add_grad(const framework::ExecutionContext& ctx,
 
 }  // namespace operators
 }  // namespace paddle
-REGISTER_OP_CUDA_KERNEL(
+REGISTER_OP_CUDA_KERNEL__(
     elementwise_add, ops::ElementwiseAddKernel<plat::CUDADeviceContext, float>,
     ops::ElementwiseAddKernel<plat::CUDADeviceContext, double>,
     ops::ElementwiseAddKernel<plat::CUDADeviceContext, int>,

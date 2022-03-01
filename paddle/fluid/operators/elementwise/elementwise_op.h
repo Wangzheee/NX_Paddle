@@ -463,3 +463,11 @@ DECLARE_NO_NEED_BUFFER_VARS_INFERER(ElementwiseDoubleGradNoBufVarsInferer, "Y",
                     op_type##GradMaker<::paddle::framework::OpDesc>,    \
                     op_type##GradMaker<::paddle::imperative::OpBase>,   \
                     ::paddle::operators::ElementwiseOpInplaceInferer);
+
+#define REGISTER_ELEMWISE_EXPLICIT_OP_WITHOUT_GRAD__(op_type, op_name)    \
+  REGISTER_OPERATOR__(op_type, ::paddle::operators::ElementwiseOp,        \
+                    ::paddle::operators::Elementwise##op_name##OpMaker, \
+                    ::paddle::operators::ElementwiseOpInferVarType,     \
+                    op_type##GradMaker<::paddle::framework::OpDesc>,    \
+                    op_type##GradMaker<::paddle::imperative::OpBase>,   \
+                    ::paddle::operators::ElementwiseOpInplaceInferer);

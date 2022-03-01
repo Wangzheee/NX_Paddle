@@ -1443,7 +1443,7 @@ REGISTER_OP_CUDA_KERNEL(bilinear_interp, ops::InterpolateOpCUDAKernel<float>,
 REGISTER_OP_CUDA_KERNEL(bilinear_interp_grad,
                         ops::InterpolateGradOpCUDAKernel<float>,
                         ops::InterpolateGradOpCUDAKernel<double>);
-REGISTER_OP_CUDA_KERNEL(nearest_interp, ops::InterpolateOpCUDAKernel<float>,
+REGISTER_OP_CUDA_KERNEL__(nearest_interp, ops::InterpolateOpCUDAKernel<float>,
                         ops::InterpolateOpCUDAKernel<double>,
                         ops::InterpolateOpCUDAKernel<int>);
 REGISTER_OP_CUDA_KERNEL(nearest_interp_grad,

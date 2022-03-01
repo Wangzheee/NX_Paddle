@@ -343,9 +343,10 @@ struct OpKernelRegistrarFunctorEx<PlaceType, false, I,
         .Touch();                                                              \
     return 0;                                                                  \
   }
+#define REGISTER_OP_CUDA_KERNEL_FUNCTOR(op_type, ...)
 
-#define REGISTER_OP_CUDA_KERNEL_FUNCTOR(op_type, ...)                 \
-  REGISTER_OP_KERNEL_EX(                                              \
+#define REGISTER_OP_CUDA_KERNEL_FUNCTOR__(op_type, ...)                 \
+  REGISTER_OP_KERNEL_EX__(                                              \
       op_type, CUDA, ::paddle::platform::CUDAPlace, DEFAULT_TYPE,     \
       ::paddle::framework::OpKernelType::kDefaultCustomizedTypeValue, \
       __VA_ARGS__)

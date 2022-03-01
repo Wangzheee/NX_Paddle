@@ -321,11 +321,11 @@ DECLARE_INPLACE_OP_INFERER(SumInplaceInferer, {"X", "Out"});
 
 namespace ops = paddle::operators;
 
-REGISTER_OPERATOR(sum, ops::SumOp, ops::SumOpMaker, ops::SumGradDescMaker,
+REGISTER_OPERATOR__(sum, ops::SumOp, ops::SumOpMaker, ops::SumGradDescMaker,
                   ops::SumGradOpBaseMaker, ops::SumOpVarTypeInference,
                   ops::SumInplaceInferer);
 
-REGISTER_OP_CPU_KERNEL(
+REGISTER_OP_CPU_KERNEL__(
     sum, ops::SumKernel<paddle::platform::CPUDeviceContext, float>,
     ops::SumKernel<paddle::platform::CPUDeviceContext, double>,
     ops::SumKernel<paddle::platform::CPUDeviceContext, int>,

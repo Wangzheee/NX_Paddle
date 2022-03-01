@@ -108,6 +108,8 @@ struct SimpleOpTypeSetTeller : public Teller {
       "reshape",
       "flatten2",
       "flatten",
+      "nearest_interp",
+      "yolo_box",
   };
 };
 
@@ -137,7 +139,15 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
     if (op_type == "transpose2") {
       if (!desc.HasAttr("axis")) return false;
     }
-    if (op_type == "matmul") {
+/*    if (op_type == "concat") {
+      if (!desc.HasAttr("axis")) return false;
+      int axis = BOOST_GET_CONST(int, desc.GetAttr("axis"));
+      if(axis == 2){
+        std::cout << "concat axis=2 not supported.\n";
+        return false;
+      }
+    }
+*/    if (op_type == "matmul") {
       auto* block = desc.Block();
       for (auto& param_name : desc.Inputs()) {
         for (auto& var_name : param_name.second) {
@@ -151,6 +161,44 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
           }
         }
       }
+    }
+    if (op_type == "reshape2") {
+      if (!desc.HasAttr("shape")) return false;
+      std::vector<int> shape =
+          BOOST_GET_CONST(std::vector<int>, desc.GetAttr("shape"));
+      auto* block = desc.Block();
+      std::string input_name = desc.Input("X")[0];
+      auto* var_desc = block->FindVar(input_name);
+      const auto input_shape = var_desc->GetShape();
+      if (shape.size() <= 1 || input_shape.size() <= 1) return false;
+      int input_volume = 1;
+      int shape_volume = 1;
+      for (size_t i=1; i<input_shape.size(); i++) {
+        input_volume *= input_shape[i];
+      }
+      for (size_t i=1; i<shape.size(); i++) {
+        shape_volume *= shape[i];
+      }
+      if(input_volume != shape_volume) {
+        VLOG(2) << "reshape2 input volume not equals to shape volume, not convert to TRT.";
+	return false;
+      }
+
+/*      std::cout << "input shape: ";
+        std::cout << "[";
+        for (size_t i=0; i<input_shape.size(); i++) {
+          std::cout << input_shape[i] << ", ";
+        }
+        std::cout << "]\n";
+      std::cout << "attr shape: ";
+        std::cout << "[";
+        for (size_t i=0; i<shape.size(); i++) {
+          std::cout << shape[i] << ", ";
+        }
+        std::cout << "]\n";
+*/    }
+    if (op_type == "nearest_interp") {
+      return false;
     }
     if ((*teller)(op_type, desc, use_no_calib_int8)) return true;
   }
