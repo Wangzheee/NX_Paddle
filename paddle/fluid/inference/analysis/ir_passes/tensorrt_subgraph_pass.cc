@@ -38,6 +38,7 @@ void analysis::TensorRtSubgraphPass::ApplyImpl(
   framework::ir::FusePassBase::Init("tensorrt_subgraph_pass", graph);
   auto enable_int8 = Get<bool>("enable_int8");
   auto use_calib_mode = Get<bool>("use_calib_mode");
+  auto with_dynamic_shape = Get<bool>("with_dynamic_shape");
   bool no_calib_int8 = enable_int8 && !(use_calib_mode);
   auto trt_disabled_ops = Get<std::vector<std::string>>("trt_disabled_ops");
   auto teller = [&](const framework::ir::Node *node) {
@@ -49,7 +50,7 @@ void analysis::TensorRtSubgraphPass::ApplyImpl(
       return false;
     }
     return tensorrt::OpTeller::Global().Tell(node->Op()->Type(), *node->Op(),
-                                             no_calib_int8);
+                                             no_calib_int8, with_dynamic_shape);
   };
 
   framework::ir::SubGraphFuser fuser(

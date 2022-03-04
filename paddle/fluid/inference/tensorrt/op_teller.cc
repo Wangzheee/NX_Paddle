@@ -114,7 +114,7 @@ struct SimpleOpTypeSetTeller : public Teller {
   };
 };
 bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
-                    bool use_no_calib_int8) {
+                    bool use_no_calib_int8, bool with_dynamic_shape) {
   // do not support the op which is labeled the `skip_quant`
   if ((desc.HasAttr("namescope") &&
        BOOST_GET_CONST(std::string, desc.GetAttr("op_namescope")) ==
@@ -162,43 +162,28 @@ bool OpTeller::Tell(const std::string& op_type, const framework::OpDesc& desc,
         }
       }
     }
-/*
     if (op_type == "reshape2") {
-      if (!desc.HasAttr("shape")) return false;
+      if (!desc.HasAttr("shape")) {
+        return false;
+      }
+      // Paddle-TRT does not support the input tensors: Shape and ShapeTensor
+      auto reshape_inputs = desc.Inputs();
+      if (reshape_inputs.find("Shape") != reshape_inputs.end()) {
+        if (desc.Input("Shape").size() >= 1) {
+          return false;
+        }
+      }
+      if (reshape_inputs.find("ShapeTensor") != reshape_inputs.end()) {
+        if (desc.Input("ShapeTensor").size() >= 1) {
+          return false;
+        }
+      }
       std::vector<int> shape =
           BOOST_GET_CONST(std::vector<int>, desc.GetAttr("shape"));
-      auto* block = desc.Block();
-      std::string input_name = desc.Input("X")[0];
-      auto* var_desc = block->FindVar(input_name);
-      const auto input_shape = var_desc->GetShape();
-      if (shape.size() <= 1 || input_shape.size() <= 1) return false;
-      int input_volume = 1;
-      int shape_volume = 1;
-      for (size_t i=1; i<input_shape.size(); i++) {
-        input_volume *= input_shape[i];
-      }
-      for (size_t i=1; i<shape.size(); i++) {
-        shape_volume *= shape[i];
-      }
-      if(input_volume != shape_volume) {
-        VLOG(2) << "reshape2 input volume not equals to shape volume, not convert to TRT.";
-	return false;
-      }
-
-     std::cout << "input shape: ";
-        std::cout << "[";
-        for (size_t i=0; i<input_shape.size(); i++) {
-          std::cout << input_shape[i] << ", ";
-        }
-        std::cout << "]\n";
-      std::cout << "attr shape: ";
-        std::cout << "[";
-        for (size_t i=0; i<shape.size(); i++) {
-          std::cout << shape[i] << ", ";
-        }
-        std::cout << "]\n";
-  
-      	}*/
+      if (shape.size() >= nvinfer1::Dims::MAX_DIMS) return false;
+      if (!with_dynamic_shape && (shape[0] == -1 || shape.size() == 1))
+        return false;
+    }
     if (op_type == "nearest_interp") {
       return false;
     }
