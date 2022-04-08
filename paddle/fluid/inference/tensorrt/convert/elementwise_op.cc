@@ -1,11 +1,8 @@
 /* Copyright (c) 2018 PaddlePaddle Authors. All Rights Reserved.
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -210,14 +207,23 @@ class ElementwiseTensorOpConverter : public OpConverter {
     nvinfer1::ILayer* layer = nullptr;
 
     auto* X = engine_->GetITensor(op_desc.Input("X").front());
-    auto* Y = engine_->GetITensor(op_desc.Input("Y").front());
+    auto* Y = engine_->GetITensor(op_desc.Input("X").front());
+    if(op_desc.Input("X").size() == 2){
+          X = engine_->GetITensor(op_desc.Input("X")[0]);
+          Y = engine_->GetITensor(op_desc.Input("X")[1]);
+    } else if(op_desc.Input("X").size() == 1){
+          X = engine_->GetITensor(op_desc.Input("X")[0]);
+          Y = engine_->GetITensor(op_desc.Input("Y")[0]);
+    }
     std::vector<nvinfer1::ITensor*> itensors;
     itensors.push_back(X);
     itensors.push_back(Y);
     nvinfer1::Dims dims_x = X->getDimensions();
     nvinfer1::Dims dims_y = Y->getDimensions();
-
-    int axis = BOOST_GET_CONST(int, op_desc.GetAttr("axis"));
+    int axis=0;
+    if(op_desc.HasAttr("axis")){
+      axis = BOOST_GET_CONST(int, op_desc.GetAttr("axis"));
+    }
     auto output_name = op_desc.Output("Out")[0];
 
     auto common_func = [&](nvinfer1::ILayer* layer) {

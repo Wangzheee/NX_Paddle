@@ -1562,6 +1562,7 @@ PDNode *patterns::Matmul::operator()() {
                          ->assert_is_op_input("matmul", "X");
   auto matmul_in_y = pattern->NewNode(matmul_in_y_repr())
                          ->AsInput()
+                         ->assert_is_persistable_var()
                          ->assert_is_op_input("matmul", "Y");
   auto matmul_out = pattern->NewNode(matmul_out_repr())
                         ->AsOutput()
